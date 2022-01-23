@@ -2,6 +2,7 @@ import 'dart:convert' hide Codec;
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
 
 import 'package:vector_math/vector_math_64.dart';
 
@@ -163,7 +164,8 @@ Future<Image> resolveImage(String href) async {
   };
 
   if (href.startsWith('http')) {
-    final Uint8List bytes = await httpGet(href);
+    final http.Response res = await http.get(Uri.parse(href));
+    final Uint8List bytes = res.bodyBytes;
     return decodeImage(bytes);
   }
 
